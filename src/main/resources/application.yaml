@@ -1,0 +1,31 @@
+spring:
+  jmx.enabled: false
+  main:
+    banner-mode: 'off'
+    allow-bean-definition-overriding: true
+  application:
+    name: multi-tenant-poc-app
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database: h2
+
+
+server:
+  port: 8080
+
+
+tenants:
+  datasources:
+    tenant1:
+      url: jdbc:sqlserver://lsosqlserver1poc.database.windows.net:1433;database=tenant1db;
+      username: hubdevdbadmin
+      password: N=!#t!Sz4VMV?@cah_k*D3R7dpHMVuBbJD6RV5vY
+      driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    tenant2:
+      url: jdbc:sqlserver://lsosqlserver1poc.database.windows.net:1433;database=tenant2db;
+      username: hubdevdbadmin
+      password: N=!#t!Sz4VMV?@cah_k*D3R7dpHMVuBbJD6RV5vY
+      driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+
