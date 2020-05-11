@@ -1,5 +1,7 @@
 package com.example.config;
 
+import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
+import net.ttddyy.dsproxy.transform.TransformInfo;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.stereotype.Component;
@@ -24,13 +26,18 @@ public class TenantConfigProperties {
 
   }
 
-  public DataSource convert(Map<String, String> source) {
-    return DataSourceBuilder.create()
+  private DataSource convert(Map<String, String> source) {
+    DataSource dataSource = DataSourceBuilder.create()
         .url(source.get("url"))
         .driverClassName(source.get("driver"))
         .username(source.get("username"))
         .password(source.get("password"))
         .build();
+    return ProxyDataSourceBuilder.create(dataSource).queryTransformer((TransformInfo transformInfo) -> {
+      String query = transformInfo.getQuery();
+      //We can transform the query here
+      return query;
+    }).build();
   }
 
 }
