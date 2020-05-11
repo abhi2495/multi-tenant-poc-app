@@ -32,7 +32,6 @@ public class TenancyContextFilter implements Filter {
     if (tenantId != null) {
       return TenancyContext.newContext(new Tenant(tenantId, tenantId, true));
     }
-
     return TenancyContext.emptyContext();
   }
 
@@ -49,11 +48,9 @@ public class TenancyContextFilter implements Filter {
 
   private String getRequestPath(HttpServletRequest request) {
     String url = request.getServletPath();
-
     if (request.getPathInfo() != null) {
       url += request.getPathInfo();
     }
-
     return url;
   }
 

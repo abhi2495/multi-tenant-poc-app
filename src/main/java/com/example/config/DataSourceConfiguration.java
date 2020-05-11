@@ -2,13 +2,14 @@ package com.example.config;
 
 import com.example.tenancy.TenancyContextHolder;
 import com.example.tenancy.Tenant;
+import org.flywaydb.core.Flyway;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-import java.util.Map;
 
 @Configuration
 @EnableConfigurationProperties(TenantConfigProperties.class)
@@ -34,6 +35,19 @@ public class DataSourceConfiguration {
     };
     customDataSource.setTargetDataSources(tenantConfigProperties.getDatasources());
     return customDataSource;
+  }
+
+  @PostConstruct
+  private void migrate() {
+    tenantConfigProperties.getDatasources().values()
+        .stream()
+        .map(dataSource -> (DataSource) dataSource)
+        .forEach(this::migrate);
+  }
+
+  private void migrate(DataSource dataSource) {
+    Flyway flyway = Flyway.configure().dataSource(dataSource).load();
+    flyway.migrate();
   }
 
 }
