@@ -1,4 +1,4 @@
-# sql-migration-library
+# multi-tenant-poc-app
 
 This application uses **db per tenant model** and Spring's *AbstractRoutingDataSource* to choose the appropriate 
 database connection for a given tenant. Assuming the tenant info is passed as part of the URL path like 
